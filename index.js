@@ -4,7 +4,8 @@ const cors = require("cors");
 const fs = require("fs")
 const jwt = require("jsonwebtoken");
 const { User, Product } = require("./database");
-require("dotenv").config();
+const path = require("path")
+require("dotenv").config({path: "./config.env"});
 
 const PORT = process.env.PORT || 5000;
 app.use(express.json());

@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
+const path = require("path")
+require("dotenv").config({path: "./config.env"});
 
-mongoose.connect("mongodb+srv://emarche:kartik4002@cluster0.1jsvxys.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect(process.env.DATABASE || "mongodb+srv://emarche:kartik4002@cluster0.1jsvxys.mongodb.net/?retryWrites=true&w=majority")
 .then(() => console.log("Database connected"))
 .catch((err) => console.log(err))
 
