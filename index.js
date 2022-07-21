@@ -9,9 +9,9 @@ require("dotenv").config({path: "./config.env"});
 
 const PORT = process.env.PORT || 5000;
 app.use(express.json());
-app.use(cors({
-    origin: "http://localhost:3000"
-}));
+app.use(cors(
+    // origin: "http://localhost:3000"
+));
 
 app.post("/signup", async (req,res) => {
     const { name, phone, email, password } = req.body;
@@ -71,12 +71,12 @@ app.get("/products", async (req,res) => {
     }
 })
 
-app.get("/getusers", async (req,res) => {
-    const getData = await User.find({});
-    if(getData) {
-        res.status(200).json({data: getData})
-    }
-})
+// app.get("/getusers", async (req,res) => {
+//     const getData = await User.find({});
+//     if(getData) {
+//         res.status(200).json({data: getData})
+//     }
+// })
 
 app.post("/admin", async (req,res) => {
     const { name, description, costprice, sellingprice, category, gender, img1, img2, img3, img4 } = req.body;
