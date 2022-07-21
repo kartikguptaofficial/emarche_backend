@@ -16,7 +16,7 @@ app.use(cors({
 app.post("/signup", async (req,res) => {
     const { name, phone, email, password } = req.body;
     const admin = false
-    const findUser = await User.findOne({email})
+    const findUser = await User.find({email: email})
     if(findUser){
         res.status(500).json({msg: "You are already registered"})
     }
