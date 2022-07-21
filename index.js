@@ -9,18 +9,24 @@ require("dotenv").config({path: "./config.env"});
 
 const PORT = process.env.PORT || 5000;
 app.use(express.json());
-app.use(cors(
-    // origin: "http://localhost:3000"
-));
+app.use(cors({
+    origin: "http://localhost:3000"
+}));
 
 app.post("/signup", async (req,res) => {
     const { name, phone, email, password } = req.body;
     const admin = false
-    const saveData = new User({name, phone, email, password, admin});
-    const data = await saveData.save();
-
-    if(data) {
-        res.status(200).json({msg: "Data sent"})
+    const findUser = await User.findOne({email})
+    if(findUser){
+        res.status(500).json({msg: "You are already registered"})
+    }
+    else{
+        const saveData = new User({name, phone, email, password, admin});
+        const data = await saveData.save();
+        
+        if(data) {
+            res.status(200).json({msg: "Data sent"})
+        }
     }
 })
 
@@ -81,6 +87,16 @@ app.post("/admin", async (req,res) => {
 
     if(saveData) {
         res.status(200).json({msg: "inserted!"})
+    }
+})
+
+app.post("/edit/:id", async (req,res) => {
+    const id = req.params.id;
+    const { name, costprice, sellingprice, img1, img2, img3, img4 } = req.body;
+    const update = await Product.updateOne({_id: id}, {$set: {name, costprice, sellingprice, img1, img2, img3, img4}})
+
+    if(update){
+        res.json({msg: "Updated"})
     }
 })
 
