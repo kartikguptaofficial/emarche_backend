@@ -18,7 +18,7 @@ app.post("/signup", async (req,res) => {
     const admin = false
     const findUser = await User.findOne({email})
     if(findUser){
-        return res.status(500).json({msg: "You are already registered"})
+        res.status(500).json({msg: "You are already registered"})
     }
     else{
         const saveData = new User({name, phone, email, password, admin});
@@ -71,13 +71,12 @@ app.get("/products", async (req,res) => {
     }
 })
 
-// app.get("/view/:id", async (req,res) => {
-//     const id = req.params.id;
-//     const getData = await Product.find({_id: id});
-//     if(getData) {
-//         res.status(200).json({data: getData})
-//     }
-// })
+app.get("/getusers", async (req,res) => {
+    const getData = await User.find({});
+    if(getData) {
+        res.status(200).json({data: getData})
+    }
+})
 
 app.post("/admin", async (req,res) => {
     const { name, description, costprice, sellingprice, category, gender, img1, img2, img3, img4 } = req.body;
