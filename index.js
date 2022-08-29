@@ -99,6 +99,30 @@ app.post("/edit/:id", async (req,res) => {
     }
 })
 
+app.get("/allproducts/:category/:gender/:filter", async(req,res) => {
+    const category = req.params.category;
+    const gender = req.params.gender;
+    const filter = req.params.filter;
+    let findProduct;
+    if(gender === "male" || gender === "female"){
+        findProduct = await Product.find({category, gender});
+    } else if(gender === "both" || gender === "unisex"){
+        findProduct = await Product.find({category});
+    }
+    if(filter === "lowtohigh"){
+        findProduct = findProduct.sort((a, b) => (a.sellingprice > b.sellingprice) ? 1 : -1)
+    } else if(filter === "hightolow"){
+        findProduct = findProduct.sort((a, b) => (a.sellingprice < b.sellingprice) ? 1 : -1)
+    } else if(filter === "all"){
+        findProduct;
+    } else if(filter === "under500"){
+        findProduct = findProduct.find({category, gender})
+    }
+    if(findProduct){
+        res.json(findProduct)
+    }
+})
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
