@@ -79,9 +79,9 @@ app.get("/products", async (req,res) => {
 // })
 
 app.post("/admin", async (req,res) => {
-    const { name, description, costprice, sellingprice, category, gender, img1, img2, img3, img4 } = req.body;
+    const { name, description, costprice, sellingprice, category, gender, img1, img2, img3, img4, img5, img6, img7, img8, linkToProduct } = req.body;
 
-    const newData = new Product({name, description, costprice, sellingprice, category, gender, img1, img2, img3, img4});
+    const newData = new Product({name, description, costprice, sellingprice, category, gender, img1, img2, img3, img4, img5, img6, img7, img8, linkToProduct});
     const saveData = await newData.save();
 
     if(saveData) {
