@@ -103,11 +103,12 @@ app.get("/allproducts/:category/:gender/:filter", async(req,res) => {
     const category = req.params.category;
     const gender = req.params.gender;
     const filter = req.params.filter;
+    
     let findProduct;
     if(gender === "male" || gender === "female"){
-        findProduct = await Product.find({category, gender});
+        findProduct = await Product.find({category, gender}).sort({_id: -1});
     } else if(gender === "both" || gender === "unisex"){
-        findProduct = await Product.find({category});
+        findProduct = await Product.find({category}).sort({_id: -1});
     }
     if(filter === "lowtohigh"){
         findProduct = findProduct.sort((a, b) => (a.sellingprice > b.sellingprice) ? 1 : -1)
@@ -115,9 +116,7 @@ app.get("/allproducts/:category/:gender/:filter", async(req,res) => {
         findProduct = findProduct.sort((a, b) => (a.sellingprice < b.sellingprice) ? 1 : -1)
     } else if(filter === "all"){
         findProduct;
-    } else if(filter === "under500"){
-        findProduct = findProduct.find({category, gender})
-    }
+    } 
     if(findProduct){
         res.json(findProduct)
     }
