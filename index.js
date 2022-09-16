@@ -108,7 +108,8 @@ app.get("/allproducts/:category/:gender/:filter", async(req,res) => {
     if(gender === "male" || gender === "female"){
         findProduct = await Product.find({category, gender}).sort({_id: -1});
     } else if(gender === "both" || gender === "unisex"){
-        findProduct = await Product.find({category}).sort({_id: -1});
+        findProduct = await Product.find({category})
+        console.log(findProduct.name)
     }
     if(filter === "lowtohigh"){
         findProduct = findProduct.sort((a, b) => (a.sellingprice > b.sellingprice) ? 1 : -1)
