@@ -19,6 +19,7 @@ const productSchema = new mongoose.Schema({
     description: { type: String },
     costprice: { type: String },
     sellingprice: { type: String },
+    mrp: { type: String },
     category: { type: String },
     gender: { type: String },
     img1: { type: String },
