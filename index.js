@@ -42,7 +42,7 @@ app.post("/login", async (req,res) => {
     }
     else{
         const token = jwt.sign(
-            {name: checkUser.name, phone: checkUser.phone ,email: checkUser.email, password: checkUser.password, admin: checkUser.admin},
+            {name: checkUser.name, phone: checkUser.phone ,email: checkUser.email, password: checkUser.password, admin: checkUser.admin, cart: checkUser.cart},
             "secret123")
         res.status(500).json({msg: checkUser, token: token})
     }
@@ -121,6 +121,23 @@ app.get("/allproducts/:category/:gender/:filter", async(req,res) => {
     if(findProduct){
         res.json(findProduct)
         // console.log(findProduct.length)
+    }
+})
+
+app.post("/addToCart/:id", async (req,res) => {
+    const token = req.headers.authorization;
+    // console.log(token)
+    if(token) {
+        const verifyToken = jwt.verify(token, "secret123", (err,user) => {
+            if(user) {
+                // if(!User.cart.includes(req.params.id)){
+                //     const updateCart = await User.updateOne({$push: {cart: req.params.id}})
+                // }
+                res.status(200).json(user.cart)
+            }
+        });
+    } else {
+        res.status(500).json("Login first!")
     }
 })
 
