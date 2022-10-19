@@ -42,7 +42,7 @@ app.post("/login", async (req,res) => {
     }
     else{
         const token = jwt.sign(
-            {name: checkUser.name, phone: checkUser.phone ,email: checkUser.email, password: checkUser.password, admin: checkUser.admin, cart: checkUser.cart},
+            {_id: checkUser._id, name: checkUser.name, phone: checkUser.phone ,email: checkUser.email, password: checkUser.password, admin: checkUser.admin, cart: checkUser.cart},
             "secret123")
         res.status(500).json({msg: checkUser, token: token})
     }
@@ -134,7 +134,7 @@ app.post("/addToCart/:id", async (req,res) => {
         if(!user.cart.includes(req.params.id)){
             const updateCart = await user.updateOne({$push: {cart: req.params.id}})
             if(updateCart){
-                res.json(user);
+                res.json("added");
             } else {
                 res.json("nhi hua")
             }
