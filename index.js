@@ -128,17 +128,33 @@ app.post("/addToCart/:id", async (req,res) => {
     const token = req.headers.authorization;
     // console.log(token)
     if(token) {
-        const verifyToken = jwt.verify(token, "secret123", (err,user) => {
-            if(user) {
-                // if(!User.cart.includes(req.params.id)){
-                //     const updateCart = await User.updateOne({$push: {cart: req.params.id}})
-                // }
-                res.status(200).json(user.cart)
+        const verifyToken = jwt.verify(token, "secret123");
+        const user = await User.findOne({email: verifyToken.email})
+        // res.json(user.cart.includes("632804c80ef85394e09e679c"));
+        if(!user.cart.includes(req.params.id)){
+            const updateCart = await user.updateOne({$push: {cart: req.params.id}})
+            if(updateCart){
+                res.json(user);
+            } else {
+                res.json("nhi hua")
             }
-        });
+        } else {
+            res.json("Already added")
+        }
     } else {
         res.status(500).json("Login first!")
     }
+})
+
+app.get("/cartItems/:id", async (req,res) => {
+    const user = await User.findById(req.params.id);
+    // res.json(user.cart);
+    let items = [];
+    for(let i=0; i<user.cart.length; i++){
+        let product = await Product.findById(user.cart[i]);
+        items.push(product);
+    }
+    res.json(items);
 })
 
 app.listen(PORT, () => {
