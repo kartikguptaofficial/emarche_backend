@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
     phone: { type: Number },
     email: { type: String },
     password: { type: String },
-    admin: { type: String }
+    admin: { type: String },
+    cart: { type: Array, default: [] }
 })
 
 const productSchema = new mongoose.Schema({

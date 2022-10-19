@@ -109,7 +109,7 @@ app.get("/allproducts/:category/:gender/:filter", async(req,res) => {
         findProduct = await Product.find({category, gender}).sort({_id: -1});
     } else if(gender === "both" || gender === "unisex"){
         findProduct = await Product.find({category}).sort({_id: -1});
-        console.log(findProduct.name)
+        // console.log(findProduct.name)
     }
     if(filter === "lowtohigh"){
         findProduct = findProduct.sort((a, b) => (a.sellingprice > b.sellingprice) ? 1 : -1)
@@ -120,6 +120,7 @@ app.get("/allproducts/:category/:gender/:filter", async(req,res) => {
     } 
     if(findProduct){
         res.json(findProduct)
+        // console.log(findProduct.length)
     }
 })
 
