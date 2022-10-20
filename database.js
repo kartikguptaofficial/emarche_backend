@@ -13,8 +13,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String },
     admin: { type: Boolean, default: false },
     cart: { type: Array, default: [] },
-    pendingOrders: { type: Array, default: [] },
-    prevOrders: { type: Array, default: [] }
+    orders: { type: Array, default: [] }
 }, { timestamps: true })
 
 const productSchema = new mongoose.Schema({

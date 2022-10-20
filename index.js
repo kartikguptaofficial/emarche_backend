@@ -15,13 +15,12 @@ app.use(cors(
 
 app.post("/signup", async (req,res) => {
     const { name, phone, email, password } = req.body;
-    const admin = false
     const findUser = await User.findOne({email})
     if(findUser){
         res.status(500).json({msg: "You are already registered"})
     }
     else{
-        const saveData = new User({name, phone, email, password, admin});
+        const saveData = new User({name, phone, email, password});
         const data = await saveData.save();
         
         if(data) {
@@ -42,7 +41,7 @@ app.post("/login", async (req,res) => {
     }
     else{
         const token = jwt.sign(
-            {_id: checkUser._id, name: checkUser.name, phone: checkUser.phone ,email: checkUser.email, password: checkUser.password, admin: checkUser.admin, cart: checkUser.cart},
+            {_id: checkUser._id, name: checkUser.name, phone: checkUser.phone ,email: checkUser.email, password: checkUser.password, admin: checkUser.admin, cart: checkUser.cart, orders: checkUser.orders},
             "secret123")
         res.status(500).json({msg: checkUser, token: token})
     }
