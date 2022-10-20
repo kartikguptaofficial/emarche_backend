@@ -9,9 +9,9 @@ require("dotenv").config({path: "./config.env"});
 
 const PORT = process.env.PORT || 5000;
 app.use(express.json());
-app.use(cors(
-    // origin: "http://localhost:3000"
-));
+// app.use(cors(
+//     // origin: "http://localhost:3000"
+// ));
 
 app.post("/signup", async (req,res) => {
     const { name, phone, email, password } = req.body;
