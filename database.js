@@ -11,9 +11,11 @@ const userSchema = new mongoose.Schema({
     phone: { type: Number },
     email: { type: String },
     password: { type: String },
-    admin: { type: String },
-    cart: { type: Array, default: [] }
-})
+    admin: { type: Boolean, default: false },
+    cart: { type: Array, default: [] },
+    pendingOrders: { type: Array, default: [] },
+    prevOrders: { type: Array, default: [] }
+}, { timestamps: true })
 
 const productSchema = new mongoose.Schema({
     name: { type: String },
@@ -32,12 +34,23 @@ const productSchema = new mongoose.Schema({
     img7: { type: String },
     img8: { type: String },
     linkToProduct: { type: String }
-})
+}, { timestamps: true })
+
+const orderSchema = new mongoose.Schema({
+    name: { type: String },
+    email: { type: String },
+    items: { type: Array },
+    totalAmt: { type: Number },
+    paymentMode: { type: String, default: "COD" },
+    delivered: { type: Boolean, default: false }
+}, { timestamps: true })
 
 const User = mongoose.model("user", userSchema);
 const Product = mongoose.model("product", productSchema);
+const Order = mongoose.model("order", orderSchema);
 
 module.exports = {
     User: User,
-    Product: Product
+    Product: Product,
+    Order: Order
 }

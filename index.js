@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const fs = require("fs")
 const jwt = require("jsonwebtoken");
-const { User, Product } = require("./database");
+const { User, Product, Order } = require("./database");
 const path = require("path")
 require("dotenv").config({path: "./config.env"});
 
@@ -54,7 +54,6 @@ app.get("/home", async (req,res) => {
     if(token) {
         const verifyToken = jwt.verify(token, "secret123", (err,user) => {
             if(user) {
-
                 res.status(200).json({user})
             }
         });
@@ -155,6 +154,67 @@ app.get("/cartItems/:id", async (req,res) => {
         items.push(product);
     }
     res.json(items);
+})
+
+app.get("/clearCart/:id", async (req,res) => {
+    const userId = req.params.id;
+    const fetchUser = await User.findById(userId);
+    const deleteCart = await fetchUser.updateOne({$set: { cart : []}});
+    if(deleteCart) {
+        res.json("cart cleared")
+    } else{
+        res.json("error")
+    }
+})
+
+app.get("/removeProduct/:productId/:userId", async (req,res) => {
+    const user = await User.findById(req.params.userId);
+    // res.json(user.cart);
+    if(user.cart.includes(req.params.productId)){
+        await user.updateOne({$pull: {cart: req.params.productId}});
+        res.json("removed");
+    } else {
+        res.json("Product doesn't exist")
+    }
+    
+})
+
+app.get("/placeOrder/:userId", async (req,res) => {
+    const user = await User.findById(req.params.userId);
+    let itemArr = [];
+    for(let i=0; i<user.cart.length; i++){
+        itemArr.push(user.cart[i]);
+    }
+    // res.json(itemArr);
+    const order = new Order({name: user.name, email: user.email, items: itemArr, totalAmt: req.body.total});
+    const saveOrder = await order.save();
+    if(saveOrder){
+        res.json(saveOrder._id)
+    } else{
+        res.json("error")
+    }
+})
+
+app.get("/pendingOrders", async (req,res) => {
+    const orders = await Order.find({});
+    res.json(orders);
+})
+
+app.get("/orders/:userId", async (req,res) => {
+    const user = await User.findById(req.params.userId);
+    const orders = await Order.find({email: user.email});
+    res.json(orders);
+})
+
+app.get("orderDelivered/:orderId", async (req,res) => {
+    const order = await Order.findById(req.params.orderId);
+    res.json(order)
+    // const update = await order.updateOne({$set: {delivered: true}});
+    // if(update){
+    //     res.json(order)
+    // } else{
+    //     res.json("error")
+    // }
 })
 
 app.listen(PORT, () => {
