@@ -179,7 +179,7 @@ app.get("/removeProduct/:productId/:userId", async (req,res) => {
     
 })
 
-app.get("/placeOrder/:userId", async (req,res) => {
+app.post("/placeOrder/:userId", async (req,res) => {
     const user = await User.findById(req.params.userId);
     let itemArr = [];
     for(let i=0; i<user.cart.length; i++){
