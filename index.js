@@ -69,12 +69,12 @@ app.get("/products", async (req,res) => {
     }
 })
 
-// app.get("/getusers", async (req,res) => {
-//     const getData = await User.find({});
-//     if(getData) {
-//         res.status(200).json({data: getData})
-//     }
-// })
+app.get("/getusers", async (req,res) => {
+    const getData = await User.find({});
+    if(getData) {
+        res.status(200).json(getData)
+    }
+})
 
 app.post("/admin", async (req,res) => {
     const { name, description, costprice, sellingprice, mrp, category, gender, img1, img2, img3, img4, img5, img6, img7, img8, linkToProduct } = req.body;
