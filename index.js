@@ -201,7 +201,7 @@ app.get("/pendingOrders", async (req,res) => {
 
 app.get("/orders/:userId", async (req,res) => {
     const user = await User.findById(req.params.userId);
-    const orders = await Order.find({email: user.email});
+    const orders = await Order.find({email: user.email}).sort({_id: -1});
     let ordersArr = [];
     for(let i=0; i<orders.length; i++){
         for(let j=0; j<orders[i].items.length; j++){
