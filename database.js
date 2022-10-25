@@ -41,6 +41,7 @@ const orderSchema = new mongoose.Schema({
     items: { type: Array },
     totalAmt: { type: Number },
     paymentMode: { type: String, default: "COD" },
+    address: { type: String },
     delivered: { type: Boolean, default: false }
 }, { timestamps: true })
 

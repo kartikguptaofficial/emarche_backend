@@ -185,7 +185,7 @@ app.post("/placeOrder/:userId", async (req,res) => {
         itemArr.push(user.cart[i]);
     }
     // res.json(itemArr);
-    const order = new Order({name: user.name, email: user.email, items: itemArr, totalAmt: req.body.total});
+    const order = new Order({name: user.name, email: user.email, items: itemArr, totalAmt: req.body.total, address: req.body.address});
     const saveOrder = await order.save();
     if(saveOrder){
         res.json(saveOrder._id)
@@ -212,8 +212,8 @@ app.get("/orders/:userId", async (req,res) => {
     res.json(ordersArr);
 })
 
-app.get("orderDelivered/:orderId", async (req,res) => {
-    const order = await Order.findById(req.params.orderId);
+app.get("/orders", async (req,res) => {
+    const order = await Order.find({});
     res.json(order)
     // const update = await order.updateOne({$set: {delivered: true}});
     // if(update){
